@@ -1,0 +1,76 @@
+
+    --------- STEGO ANALYSIS REPORT ---------
+    File: download.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: C:\Users\user\Desktop\CTF\harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: C:\Users\user\Desktop\CTF\harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: C:\Users\user\Desktop\CTF\harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: stego.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: C:\Users\user\Desktop\CTF\harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: C:\Users\user\Desktop\CTF\harshil.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: output/extracted.png
+    Result: Clean
+    ----------------------------------------
+    
+    --------- STEGO ANALYSIS REPORT ---------
+    File: strings output/extracted.png
+    Result: Clean
+    ----------------------------------------
+    

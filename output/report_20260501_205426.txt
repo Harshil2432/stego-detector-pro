@@ -1,0 +1,47 @@
+C:/Users/user/Desktop/CTF\ACRStealer_Case_Study.docx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\ACRStealer_Harshil_casestudy.pptx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\ACRStealer_Research_Paper.docx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\AMAN BPES.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\AMAN BPES_1.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Aman yadav.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Case study_Stuxnet - Copy.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Case study_Stuxnet.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\download.jpg -> 🚨 ALERT: Suspicious Image (Detected or Extracted)
+C:/Users/user/Desktop/CTF\Frontpage and images.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\harshil.png -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\HARSHIL_ADF_PRACTICAL_LAB_MANUAL.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Harshil_MalwareResearch_Paper.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Harshil_Malware_CaseStudy.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Harshil_Malware_CaseStudy.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\HARSHIL_RESUME.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Harshil_WAPT Lab manual.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Harshil_WAPT Lab manual.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\if you are peaceful, then u are powerfu;l.png -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\images (1).jpg -> 🚨 ALERT: Suspicious Image (Detected or Extracted)
+C:/Users/user/Desktop/CTF\images.jpg -> 🚨 ALERT: Suspicious Image (Detected or Extracted)
+C:/Users/user/Desktop/CTF\mahi.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Personal_Safety_Response_Aman_Yadav.pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Python FPractical_R.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\py_index.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\Resident_Safety_Enhanced.pptx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\R_WAPT Lab manual.docx -> 🚨 ALERT: [!] Suspicious hidden characters found in DOCX
+C:/Users/user/Desktop/CTF\SilverRAT Malware - case study (rachel).pdf -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Smart phone forensics_ADF.pptx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Specification_Recursion_Python.pptx -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.14.07 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.17.00 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.17.45 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.18.38 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.18.39 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.20.40 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.24.16 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\WhatsApp Image 2026-04-08 at 12.31.35 AM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\0_l-uS6c2MsNOzzL1p.webp -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\1_13_dJV7YO890pFtOfrOnTQ.webp -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\3vPZLLRxS9ORPFLKgAXvwg.webp -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\images.jpg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\Ministry_of_Home_Affairs_India.svg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\Theme for CTF.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\WhatsApp Image 2026-01-28 at 8.41.52 PM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\Photos\WhatsApp Image 2026-01-30 at 10.29.55 PM.jpeg -> ✅ CLEAN
+C:/Users/user/Desktop/CTF\Scocial media Department\video\final video.mp4 -> ✅ CLEAN
