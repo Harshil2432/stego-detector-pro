@@ -1,20 +1,32 @@
 # ============================================
-# 🔐 DIGITAL FORENSICS STEGO SUITE
-# Full Working GUI + PDF Report Version
+# 🔐 ULTIMATE DIGITAL FORENSICS SUITE
 # ============================================
 
 import tkinter as tk
-from tkinter import filedialog
-from tkinter import messagebox
 
-from universal_extractor import analyze_file
+from tkinter import (
+    filedialog,
+    messagebox,
+    ttk
+)
 
 import io
 import sys
 import threading
 import os
 
-# PDF REPORT
+from datetime import datetime
+
+# ============================================
+# FORENSIC ENGINE
+# ============================================
+
+from universal_extractor import analyze_file
+
+# ============================================
+# PDF REPORT LIBRARIES
+# ============================================
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
@@ -23,146 +35,310 @@ from reportlab.platypus import (
     TableStyle
 )
 
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import (
+    getSampleStyleSheet
+)
+
 from reportlab.lib import colors
-from datetime import datetime
 
 # ============================================
-# 📂 OUTPUT DIRECTORY
+# OUTPUT DIRECTORY
 # ============================================
 
 OUTPUT_DIR = "output"
+
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ============================================
-# 🌍 GLOBAL VARIABLES
+# GLOBAL VARIABLES
 # ============================================
 
 last_results = ""
+
 last_file = ""
 
+scan_count = 0
+
 # ============================================
-# 📄 PDF REPORT GENERATOR
+# PDF REPORT GENERATOR
 # ============================================
 
 def generate_pdf_report(file_path, results):
 
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    timestamp = datetime.now().strftime(
+        "%Y-%m-%d_%H-%M-%S"
+    )
 
     pdf_path = (
         f"{OUTPUT_DIR}/forensic_report_{timestamp}.pdf"
     )
 
-    doc = SimpleDocTemplate(pdf_path)
+    doc = SimpleDocTemplate(
+        pdf_path,
+        rightMargin=40,
+        leftMargin=40,
+        topMargin=40,
+        bottomMargin=28
+    )
 
     styles = getSampleStyleSheet()
 
     elements = []
 
+    # ============================================
     # TITLE
+    # ============================================
+
     title = Paragraph(
-        "Digital Forensics Steganography Report",
+        """
+        <font size=22>
+        <b>Advanced Digital Forensics Report</b>
+        </font>
+        """,
         styles['Title']
     )
 
     elements.append(title)
+
     elements.append(Spacer(1, 20))
 
-    # FILE INFO
+    # ============================================
+    # RISK LEVEL
+    # ============================================
+
+    risk = "LOW"
+
+    color = "green"
+
+    if "HIGHLY SUSPICIOUS" in results:
+
+        risk = "HIGH"
+
+        color = "red"
+
+    elif "POSSIBLY SUSPICIOUS" in results:
+
+        risk = "MEDIUM"
+
+        color = "orange"
+
+    summary = Paragraph(
+        f"""
+        <font size=12>
+        <b>Risk Level:</b>
+        <font color='{color}'><b>{risk}</b></font>
+        </font>
+        """,
+        styles['BodyText']
+    )
+
+    elements.append(summary)
+
+    elements.append(Spacer(1, 20))
+
+    # ============================================
+    # FILE INFO TABLE
+    # ============================================
+
+    try:
+        size = os.path.getsize(file_path)
+
+    except:
+        size = "Unknown"
+
     info_data = [
-        ["File Path", file_path],
-        ["Generated", timestamp]
+        ["Scanned File", file_path],
+        ["Generated", timestamp],
+        ["File Size", str(size)],
+        ["Engine", "Advanced Stego Suite"]
     ]
 
     table = Table(
         info_data,
-        colWidths=[150, 350]
+        colWidths=[180, 380]
     )
 
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+
+        ('BACKGROUND', (0, 0), (-1, 0), colors.darkblue),
+
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica')
+
+        ('BACKGROUND', (0, 1), (-1, -1), colors.beige)
+
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1, 20))
 
+    elements.append(Spacer(1, 25))
+
+    # ============================================
     # RESULTS
-    result_title = Paragraph(
-        "<b>Analysis Results</b>",
+    # ============================================
+
+    heading = Paragraph(
+        "<b>Detailed Analysis Results</b>",
         styles['Heading2']
     )
 
-    elements.append(result_title)
+    elements.append(heading)
 
     result_para = Paragraph(
-        results.replace("\n", "<br/>"),
+        f"""
+        <font face='Courier' size=8>
+        {results.replace(chr(10), '<br/>')}
+        </font>
+        """,
         styles['BodyText']
     )
 
     elements.append(result_para)
 
+    elements.append(Spacer(1, 20))
+
+    # ============================================
+    # FOOTER
+    # ============================================
+
+    footer = Paragraph(
+        """
+        <font size=9 color='grey'>
+        Generated by Ultimate Digital Forensics Suite
+        </font>
+        """,
+        styles['BodyText']
+    )
+
+    elements.append(footer)
+
+    # ============================================
     # BUILD PDF
+    # ============================================
+
     doc.build(elements)
 
     return pdf_path
 
-
 # ============================================
-# 🖥️ UPDATE OUTPUT BOX
+# UPDATE OUTPUT
 # ============================================
 
-def update_output(results):
+def update_output(text):
 
-    output.insert(tk.END, results)
+    timestamp = datetime.now().strftime(
+        "%H:%M:%S"
+    )
+
+    output.insert(
+        tk.END,
+        f"[{timestamp}] {text}"
+    )
 
     output.see(tk.END)
 
     root.update_idletasks()
 
+# ============================================
+# COLORIZED ALERTS
+# ============================================
+
+def insert_colored(text):
+
+    if "🚨" in text:
+
+        output.insert(
+            tk.END,
+            text,
+            "danger"
+        )
+
+    elif "⚠" in text:
+
+        output.insert(
+            tk.END,
+            text,
+            "warning"
+        )
+
+    else:
+
+        output.insert(
+            tk.END,
+            text,
+            "normal"
+        )
 
 # ============================================
-# 🧠 RUN FORENSIC ANALYSIS
+# RUN ANALYSIS
 # ============================================
 
 def run_analysis(file_path):
 
     global last_results
     global last_file
+    global scan_count
 
-    # Capture console output
+    progress.start()
+
+    status_label.config(
+        text="Status: Scanning..."
+    )
+
     captured_output = io.StringIO()
 
     sys.stdout = captured_output
 
     try:
+
         analyze_file(file_path)
 
     except Exception as e:
+
         print("[ERROR]", e)
 
     finally:
+
         sys.stdout = sys.__stdout__
 
-    # Get results
     results = captured_output.getvalue()
 
-    results += "\n\n✅ FORENSIC SCAN FINISHED\n"
-
-    # Save globally
-    last_results = results
-    last_file = file_path
-
-    # Update GUI
-    output.after(
-        0,
-        lambda: update_output(results)
+    timestamp = datetime.now().strftime(
+        "%H:%M:%S"
     )
 
+    results += (
+        f"\n\n✅ Scan Finished "
+        f"at {timestamp}\n"
+    )
+
+    last_results = results
+
+    last_file = file_path
+
+    scan_count += 1
+
+    # ============================================
+    # UPDATE OUTPUT
+    # ============================================
+
+    output.after(
+        0,
+        lambda: insert_colored(results)
+    )
+
+    progress.stop()
+
+    status_label.config(
+        text=(
+            f"Status: Scan Completed | "
+            f"Total Scans: {scan_count}"
+        )
+    )
 
 # ============================================
-# 🔍 FILE SCAN
+# FILE SCAN
 # ============================================
 
 def scan_file():
@@ -174,12 +350,10 @@ def scan_file():
 
     output.delete(1.0, tk.END)
 
-    output.insert(
-        tk.END,
-        f"🔍 Scanning:\n{file_path}\n\n"
+    update_output(
+        f"\n🔍 Scanning File:\n{file_path}\n\n"
     )
 
-    # Thread
     thread = threading.Thread(
         target=run_analysis,
         args=(file_path,)
@@ -189,9 +363,57 @@ def scan_file():
 
     thread.start()
 
+# ============================================
+# FOLDER SCAN
+# ============================================
+
+def scan_folder():
+
+    folder_path = filedialog.askdirectory()
+
+    if not folder_path:
+        return
+
+    output.delete(1.0, tk.END)
+
+    update_output(
+        f"\n📁 Folder Scan Started:\n"
+        f"{folder_path}\n\n"
+    )
+
+    def worker():
+
+        for root_dir, _, files in os.walk(folder_path):
+
+            for file in files:
+
+                path = os.path.join(
+                    root_dir,
+                    file
+                )
+
+                update_output(
+                    f"\n====================\n"
+                    f"{path}\n"
+                    f"====================\n"
+                )
+
+                run_analysis(path)
+
+        status_label.config(
+            text="Status: Folder Scan Completed"
+        )
+
+    thread = threading.Thread(
+        target=worker
+    )
+
+    thread.daemon = True
+
+    thread.start()
 
 # ============================================
-# 📄 SAVE PDF REPORT
+# SAVE PDF
 # ============================================
 
 def save_pdf():
@@ -215,9 +437,8 @@ def save_pdf():
             last_results
         )
 
-        output.insert(
-            tk.END,
-            f"\n📄 PDF Report Saved:\n{pdf_path}\n"
+        update_output(
+            f"\n📄 PDF Saved:\n{pdf_path}\n"
         )
 
         messagebox.showinfo(
@@ -232,18 +453,27 @@ def save_pdf():
             str(e)
         )
 
+# ============================================
+# CLEAR OUTPUT
+# ============================================
+
+def clear_output():
+
+    output.delete(1.0, tk.END)
 
 # ============================================
-# 🖥️ MAIN GUI
+# MAIN GUI
 # ============================================
 
 root = tk.Tk()
 
 root.title(
-    "🔐 Digital Forensics Stego Suite"
+    "🔐 Ultimate Digital Forensics Suite"
 )
 
-root.geometry("1000x700")
+root.geometry("1300x850")
+
+root.configure(bg="#101010")
 
 # ============================================
 # TITLE
@@ -252,10 +482,12 @@ root.geometry("1000x700")
 title = tk.Label(
     root,
     text=(
-        "🔐 Digital Forensics & "
-        "Steganography Analyzer"
+        "🔐 Ultimate Digital Forensics "
+        "& Steganography Analyzer"
     ),
-    font=("Arial", 18, "bold")
+    font=("Arial", 22, "bold"),
+    fg="lime",
+    bg="#101010"
 )
 
 title.pack(pady=10)
@@ -264,50 +496,82 @@ title.pack(pady=10)
 # BUTTON FRAME
 # ============================================
 
-button_frame = tk.Frame(root)
+button_frame = tk.Frame(
+    root,
+    bg="#101010"
+)
 
 button_frame.pack(pady=10)
 
 # ============================================
-# SCAN BUTTON
+# BUTTONS
 # ============================================
 
-scan_btn = tk.Button(
-    button_frame,
-    text="Select File & Scan",
-    command=scan_file,
-    width=25,
-    height=2,
-    bg="black",
-    fg="white",
-    font=("Arial", 11, "bold")
+buttons = [
+
+    ("Scan File", scan_file, "black"),
+
+    ("Scan Folder", scan_folder, "#222222"),
+
+    ("Save PDF", save_pdf, "darkred"),
+
+    ("Clear Output", clear_output, "darkblue")
+
+]
+
+for i, (text, cmd, color) in enumerate(buttons):
+
+    btn = tk.Button(
+        button_frame,
+        text=text,
+        command=cmd,
+        width=18,
+        height=2,
+        bg=color,
+        fg="white",
+        font=("Arial", 10, "bold")
+    )
+
+    btn.grid(
+        row=0,
+        column=i,
+        padx=10
+    )
+
+# ============================================
+# PROGRESS BAR
+# ============================================
+
+progress = ttk.Progressbar(
+    root,
+    mode='indeterminate',
+    length=400
 )
 
-scan_btn.grid(
-    row=0,
-    column=0,
-    padx=10
+progress.pack(pady=5)
+
+# ============================================
+# OUTPUT FRAME
+# ============================================
+
+output_frame = tk.Frame(root)
+
+output_frame.pack(
+    fill="both",
+    expand=True,
+    padx=10,
+    pady=10
 )
 
 # ============================================
-# PDF BUTTON
+# SCROLLBAR
 # ============================================
 
-pdf_btn = tk.Button(
-    button_frame,
-    text="Save PDF Report",
-    command=save_pdf,
-    width=25,
-    height=2,
-    bg="darkred",
-    fg="white",
-    font=("Arial", 11, "bold")
-)
+scrollbar = tk.Scrollbar(output_frame)
 
-pdf_btn.grid(
-    row=0,
-    column=1,
-    padx=10
+scrollbar.pack(
+    side="right",
+    fill="y"
 )
 
 # ============================================
@@ -315,16 +579,57 @@ pdf_btn.grid(
 # ============================================
 
 output = tk.Text(
-    root,
+    output_frame,
     wrap="word",
-    font=("Consolas", 10)
+    font=("Consolas", 10),
+    bg="black",
+    fg="lime",
+    yscrollcommand=scrollbar.set
 )
 
 output.pack(
     fill="both",
-    expand=True,
-    padx=10,
-    pady=10
+    expand=True
+)
+
+scrollbar.config(
+    command=output.yview
+)
+
+# ============================================
+# COLOR TAGS
+# ============================================
+
+output.tag_config(
+    "danger",
+    foreground="red"
+)
+
+output.tag_config(
+    "warning",
+    foreground="orange"
+)
+
+output.tag_config(
+    "normal",
+    foreground="lime"
+)
+
+# ============================================
+# STATUS BAR
+# ============================================
+
+status_label = tk.Label(
+    root,
+    text="Status: Ready",
+    anchor="w",
+    bg="#202020",
+    fg="white"
+)
+
+status_label.pack(
+    fill="x",
+    side="bottom"
 )
 
 # ============================================
