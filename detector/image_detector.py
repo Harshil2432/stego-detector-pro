@@ -1,66 +1,298 @@
-from PIL import Image
-import numpy as np
-from stegano import lsb
-from utils.entropy_analysis import calculate_entropy
+# ============================================
+# ADVANCED IMAGE STEGANOGRAPHY DETECTOR
+# ============================================
 
-def detect_lsb(image_path):
+from PIL import Image
+
+import numpy as np
+
+from stegano import lsb
+
+from scipy.stats import chisquare
+
+from utils.entropy_analysis import (
+    calculate_entropy
+)
+
+# ============================================
+# IMAGE ANALYSIS
+# ============================================
+
+def analyze_image(image_path):
+
+    print("\n[ADVANCED IMAGE ANALYSIS]")
+
+    score = 0
+
+    hidden_msg = None
+
+    # ============================================
+    # LOAD IMAGE
+    # ============================================
+
     try:
+
         img = Image.open(image_path)
+
         pixels = np.array(img)
 
-        # LSB Analysis
-        lsb_bits = pixels & 1
-        unique, counts = np.unique(lsb_bits, return_counts=True)
+        print("[+] Image loaded successfully")
 
-        lsb_dict = {int(k): int(v) for k, v in zip(unique, counts)}
-        print("[+] LSB Distribution:", lsb_dict)
+        print(f"[+] Shape: {pixels.shape}")
+
+    except Exception as e:
+
+        print("[ERROR] Failed to load image")
+
+        print(e)
+
+        return False
+
+    # ============================================
+    # LSB EXTRACTION
+    # ============================================
+
+    try:
+
+        hidden_msg = lsb.reveal(image_path)
+
+        if hidden_msg:
+
+            print(
+                "\n[🚨] Hidden LSB Message Found:"
+            )
+
+            # Limit output size
+            preview = hidden_msg[:500]
+
+            print(preview)
+
+            if len(hidden_msg) > 500:
+
+                print(
+                    "\n[+] Payload truncated..."
+                )
+
+            score += 50
+
+        else:
+
+            print(
+                "[+] No hidden LSB payload detected"
+            )
+
+    except Exception:
+
+        print("[!] LSB extraction failed")
+
+    # ============================================
+    # ENTROPY ANALYSIS
+    # ============================================
+
+    try:
+
+        entropy = calculate_entropy(
+            pixels.flatten()
+        )
+
+        print(f"[+] Entropy: {entropy:.4f}")
+
+        # Entropy scoring
+        if entropy > 7.0:
+
+            print(
+                "[🚨] Extremely high entropy"
+            )
+
+            score += 30
+
+        elif entropy > 6.0:
+
+            print(
+                "[⚠] Elevated entropy detected"
+            )
+
+            score += 20
+
+        elif entropy > 5.2:
+
+            score += 10
+
+    except Exception as e:
+
+        print("[ERROR] Entropy analysis failed")
+
+        print(e)
+
+    # ============================================
+    # LSB DISTRIBUTION
+    # ============================================
+
+    try:
+
+        lsb_bits = pixels & 1
+
+        unique, counts = np.unique(
+            lsb_bits,
+            return_counts=True
+        )
+
+        lsb_dict = {
+
+            int(k): int(v)
+
+            for k, v in zip(unique, counts)
+
+        }
+
+        print(
+            f"[+] LSB Distribution: {lsb_dict}"
+        )
 
         count_0 = lsb_dict.get(0, 0)
+
         count_1 = lsb_dict.get(1, 0)
 
         total = count_0 + count_1
-        ratio = count_1 / total if total > 0 else 0
 
-        print(f"[+] LSB 1-bit ratio: {ratio:.6f}")
+        balance = abs(
+            count_0 - count_1
+        ) / total
 
-        # Entropy
-        entropy = calculate_entropy(pixels.flatten())
-        print(f"[+] Entropy: {entropy:.4f}")
+        print(
+            f"[+] LSB Balance: {balance:.4f}"
+        )
 
-        # Confidence
-        confidence = int((ratio * 100) + (entropy * 5))
-        confidence = min(confidence, 100)
-        print(f"[+] Confidence Score: {confidence}%")
+        # ============================================
+        # BALANCE SCORING
+        # ============================================
 
-        # Balance
-        balance = abs(count_0 - count_1) / total if total > 0 else 0
-        print(f"[+] LSB Balance: {balance:.4f}")
+        if balance < 0.05:
 
-        # Detection logic
-        suspicious = False
-        if (ratio > 0.3 and entropy > 6.5) or balance < 0.02:
-            print("[!] Suspicious (statistical detection)")
-            suspicious = True
-        else:
-            print("[+] Likely clean (statistical)")
+            print(
+                "[🚨] Highly suspicious LSB balancing"
+            )
 
-        # 🔓 ALWAYS attempt extraction
-        try:
-            hidden_msg = lsb.reveal(image_path)
-            if hidden_msg:
-                print("[+] Hidden Message Found:", hidden_msg)
-                suspicious = True
-            else:
-                print("[+] No hidden message detected via extraction")
-        except Exception as e:
-            print("[ERROR extracting message]", e)
+            score += 30
 
-        # FINAL DECISION
-        if suspicious:
-            return True, "Suspicious Image (Detected or Extracted)"
-        else:
-            return False, "Clean Image"
+        elif balance < 0.10:
+
+            print(
+                "[⚠] Suspicious LSB balancing"
+            )
+
+            score += 20
+
+        elif balance < 0.15:
+
+            score += 10
 
     except Exception as e:
-        print("[ERROR]", e)
-        return False, "Error processing image"
+
+        print("[ERROR] LSB analysis failed")
+
+        print(e)
+
+    # ============================================
+    # CHI-SQUARE ANALYSIS
+    # ============================================
+
+    try:
+
+        observed = [
+            count_0,
+            count_1
+        ]
+
+        expected = [
+            total / 2,
+            total / 2
+        ]
+
+        chi, p_value = chisquare(
+            observed,
+            expected
+        )
+
+        print(
+            f"[+] Chi-Square p-value: "
+            f"{p_value:.6f}"
+        )
+
+        # ============================================
+        # CHI SCORE
+        # ============================================
+
+        if p_value > 0.9:
+
+            print(
+                "[🚨] Strong statistical anomaly"
+            )
+
+            score += 20
+
+        elif p_value > 0.7:
+
+            print(
+                "[⚠] Moderate statistical anomaly"
+            )
+
+            score += 10
+
+    except Exception as e:
+
+        print(
+            "[ERROR] Chi-square analysis failed"
+        )
+
+        print(e)
+
+    # ============================================
+    # FINAL SCORE
+    # ============================================
+
+    score = min(score, 100)
+
+    print(
+        f"\n[+] Suspicion Score: {score}/100"
+    )
+
+    # ============================================
+    # FINAL VERDICT
+    # ============================================
+
+    if score >= 70:
+
+        print(
+            "🚨 HIGHLY SUSPICIOUS IMAGE"
+        )
+
+    elif score >= 40:
+
+        print(
+            "⚠ POSSIBLY SUSPICIOUS IMAGE"
+        )
+
+    else:
+
+        print(
+            "✅ LIKELY CLEAN IMAGE"
+        )
+
+    # ============================================
+    # RETURN RESULTS
+    # ============================================
+
+    return {
+
+        "score": score,
+
+        "hidden_message": hidden_msg,
+
+        "entropy": entropy,
+
+        "balance": balance,
+
+        "p_value": p_value
+
+    }

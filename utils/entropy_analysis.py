@@ -1,15 +1,33 @@
+# ============================================
+# ENTROPY ANALYSIS
+# ============================================
+
+import math
+
 import numpy as np
 
+# ============================================
+# CALCULATE ENTROPY
+# ============================================
+
 def calculate_entropy(data):
-    try:
-        data = data.astype(np.uint8)
 
-        histogram = np.bincount(data, minlength=256)
-        probs = histogram / len(data)
+    histogram, _ = np.histogram(
+        data,
+        bins=256,
+        range=(0, 256)
+    )
 
-        entropy = -np.sum([p * np.log2(p) for p in probs if p > 0])
-        return entropy
+    histogram = histogram / histogram.sum()
 
-    except Exception as e:
-        print("[ERROR in entropy]", e)
-        return 0
+    entropy = -sum(
+
+        p * math.log2(p)
+
+        for p in histogram
+
+        if p > 0
+
+    )
+
+    return entropy
